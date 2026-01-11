@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 import time
 from threading import Lock
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
+instrumentator = Instrumentator().instrument(app).expose(app) #code untuk LO 3
 
 counter = 0
 counter_lock = Lock()
