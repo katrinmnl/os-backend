@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web-service:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    networks:
+      - monitoring-net
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring-net
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring-net
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Password login grafana
+
+networks:
+  monitoring-net:
+    driver: bridge
